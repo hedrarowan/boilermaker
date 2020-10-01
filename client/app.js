@@ -8,6 +8,9 @@ const App = () => {
     <div>
       <Navbar />
       <Routes />
+      <canvas width="320" height="240" className="myCanvas">
+        <p>POOOp</p>
+      </canvas>
     </div>
   )
 }
