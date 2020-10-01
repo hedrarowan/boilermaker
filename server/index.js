@@ -10,8 +10,10 @@ const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
-module.exports = app
+const sc = require('supercolliderjs')
 
+module.exports = app
+console.log(sc.lang, 'WOW HELLO')
 // This is a global Mocha hook, used for resource cleanup.
 // Otherwise, Mocha v4+ never quits after tests.
 if (process.env.NODE_ENV === 'test') {
@@ -93,6 +95,17 @@ const createApp = () => {
     res.status(err.status || 500).send(err.message || 'Internal server error.')
   })
 }
+
+// const server = sc.server.boot().then(async (server) => {
+//   console.log('server is', server.synthDef)
+//   // await server.callAndResponse(defLoadMsg)
+// });
+
+// sc.lang.boot({debug: false}).then(function(sclang) {
+//   sclang.interpret( ' 1 + 1').then(function(answer) {
+//     console.log('1 + 1 =' + answer)
+//   }, console.error)
+// })
 
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
