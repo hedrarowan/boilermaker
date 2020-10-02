@@ -44,7 +44,17 @@ export default class Home extends React.Component {
 
   drawLine(context, x1, y1, x2, y2) {
     context.beginPath()
-    context.strokeStyle = 'black'
+    var gradient = context.createLinearGradient(
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    )
+    gradient.addColorStop('0', 'magenta')
+    gradient.addColorStop('0.5', 'blue')
+    gradient.addColorStop('1.0', 'red')
+    context.strokeStyle = gradient
+
     context.lineWidth = 50
     context.moveTo(x1, y1)
     context.lineTo(x2, y2)

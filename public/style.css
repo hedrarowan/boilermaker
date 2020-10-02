@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  background-color: fuchsia;
 }
 
 a {
@@ -22,4 +23,5 @@ form div {
 
 #my-canvas {
   border-style: dashed;
+  background-color: fuchsia;
 }
