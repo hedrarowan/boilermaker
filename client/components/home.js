@@ -5,6 +5,7 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props)
     this.handleClick = this.handleClick.bind(this)
+    this.handleOff = this.handleOff.bind(this)
     this.canvas = null
     this.ctx = null
     this.isDrawing = false
@@ -37,7 +38,6 @@ export default class Home extends React.Component {
         this.x = 0
         this.y = 0
         this.isDrawing = false
-        await axios.delete('api/sounds')
       }
     })
   }
@@ -64,12 +64,18 @@ export default class Home extends React.Component {
     await axios.get(`/api/sounds`)
   }
 
+  async handleOff(event) {
+    event.preventDefault()
+    await axios.delete(`/api/sounds`)
+  }
+
   render() {
     return (
       <div>
         HELLO
         <div>
           <button onClick={this.handleClick}>Start Audio</button>
+          <button onClick={this.handleOff}>Stop Audio</button>
         </div>
         <div>
           <canvas
