@@ -2,10 +2,10 @@ import React from 'react'
 
 const LoadingSpinner = () => (
   <div>
-    <i className="fas fa-spinner fa-spin">
-      {' '}
-      <h3>Loading...</h3>
-    </i>
+    
+    <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+      
+  
   </div>
 )
 

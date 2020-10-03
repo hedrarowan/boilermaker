@@ -12,10 +12,13 @@ export default class Home extends React.Component {
     this.isDrawing = false
     this.x = 0
     this.y = 0
+    this.imgDataLoop = this.imgDataLoop.bind(this)
+    this.state = {
+      loading: false
+    }
     this.drawLine = this.drawLine.bind(this)
     this.handleThird = this.handleThird.bind(this)
     this.level = 0
-    this.loading = false
   }
 
   async componentDidMount() {
@@ -52,24 +55,11 @@ export default class Home extends React.Component {
           this.canvas.height
         ).data
         const pixels = []
-        function imgDataLoop(imgData) {
-          if (typeof imgData !== 'array') {
-            for (let i = 0; i < imgData.length; i++) {
-              if (imgData[i] !== 0) {
-                pixels.push(imgData[i])
-              }
-            }
-          } else {
-            for (let j = 0; j < imgData.length; j++) {
-              imgDataLoop(imgData[j])
-            }
-          }
 
-          return pixels.length
-        }
+        
         ;``
 
-        const pixelsFilled = imgDataLoop(imgData)
+        const pixelsFilled = this.imgDataLoop(imgData, pixels)
 
         const percentCompleted =
           pixelsFilled / (this.canvas.width * this.canvas.height)
@@ -90,16 +80,22 @@ export default class Home extends React.Component {
             )
             if (doneStatus === 'done') {
               alert(`congratulations, you made it to level ${this.level}`)
-              this.loading = true; 
-              console.log('statate:', this.state)
+              this.setState({
+                loading: true
+              })
+              // console.log('statate:', this.loading)
               const level = {
                 level: this.level
               }
+
               setTimeout(async () => {
-                await axios.put(`/api/sounds`, level);
-                this.loading = false; 
+                await axios.put(`/api/sounds`, level)
+                // this.loading = false
+                await this.setState({
+                  loading: false
+                })
+                console.log(this.loading)
               }, 4000)
-             
             }
           }
         }
@@ -108,11 +104,26 @@ export default class Home extends React.Component {
       }
     })
   }
+  imgDataLoop(imgData, pixels) {
+    if (typeof imgData !== 'array') {
+      for (let i = 0; i < imgData.length; i++) {
+        if (imgData[i] !== 0) {
+          pixels.push(imgData[i])
+        }
+      }
+    } else {
+      for (let j = 0; j < imgData.length; j++) {
+        imgDataLoop(imgData[j])
+      }
+    }
 
+    return pixels.length
+  }
   drawLine(context, x1, y1, x2, y2) {
+    let gradient
     context.beginPath()
     if (this.level === 0) {
-      var gradient = context.createLinearGradient(
+      gradient = context.createLinearGradient(
         0,
         0,
         this.canvas.width,
@@ -125,7 +136,7 @@ export default class Home extends React.Component {
     }
 
     if (this.level === 1) {
-      var gradient = context.createLinearGradient(
+      gradient = context.createLinearGradient(
         0,
         0,
         this.canvas.width,
@@ -137,7 +148,7 @@ export default class Home extends React.Component {
     }
 
     if (this.level === 2) {
-      var gradient = context.createLinearGradient(
+      gradient = context.createLinearGradient(
         0,
         0,
         this.canvas.width,
@@ -174,26 +185,24 @@ export default class Home extends React.Component {
   }
 
   render() {
+    const loading = this.state.loading
+    console.log(loading)
     return (
       <div>
         <div>
-          <button onClick={this.handleClick}>Start Audio</button>
-          <button onClick={this.handleOff}>Stop Audio </button>
-          <button onClick={this.handleThird}>Try Again</button>
+          <button className='button' onClick={this.handleClick}>Start Audio</button>
+          <button className='button' onClick={this.handleOff}>Stop Audio </button>
+          
+          {this.state.loading ? <LoadingSpinner /> : null}
         </div>
         <div>
-          {this.loading ? (
-            <LoadingSpinner />
-          ) : (
-            <canvas
-              id="my-canvas"
-              width={window.innerWidth}
-              height={window.innerHeight}
-              
-            >
-              <p>Your browser doesnt support canvas</p>
-            </canvas>
-          )}
+          <canvas
+            id="my-canvas"
+            width={window.innerWidth}
+            height={window.innerHeight}
+          >
+            <p>Your browser doesnt support canvas</p>
+          </canvas>
         </div>
       </div>
     )
