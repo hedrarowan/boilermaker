@@ -2,10 +2,17 @@ import React from 'react'
 
 const LoadingSpinner = () => (
   <div>
-    
-    <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-      
-  
+    <div className="lds-grid">
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+    </div>
   </div>
 )
 

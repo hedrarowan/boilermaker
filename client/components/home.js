@@ -78,8 +78,10 @@ export default class Home extends React.Component {
               this.canvas.width,
               this.canvas.height
             )
-            if (doneStatus === 'done') {
-              alert(`congratulations, you made it to level ${this.level}`)
+            if(this.level === 3) {
+              alert('you won the whole game')
+            } else {if (doneStatus === 'done') {
+             
               this.setState({
                 loading: true
               })
@@ -95,7 +97,8 @@ export default class Home extends React.Component {
                   loading: false
                 })
                 console.log(this.loading)
-              }, 4000)
+              }, 4000)}
+            
             }
           }
         }
