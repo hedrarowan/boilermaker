@@ -55,8 +55,6 @@ export default class Home extends React.Component {
           this.canvas.height
         ).data
         const pixels = []
-
-        
         ;``
 
         const pixelsFilled = this.imgDataLoop(imgData, pixels)
@@ -78,28 +76,26 @@ export default class Home extends React.Component {
               this.canvas.width,
               this.canvas.height
             )
-            if(this.level === 3) {
-              alert('you won the whole game')
-            } else {if (doneStatus === 'done') {
-             
-              this.setState({
-                loading: true
-              })
-              // console.log('statate:', this.loading)
-              const level = {
-                level: this.level
-              }
-
-              setTimeout(async () => {
-                await axios.put(`/api/sounds`, level)
-                // this.loading = false
-                await this.setState({
-                  loading: false
+            if (this.level === 3) {
+              alert('Congrats, you accomplished the entire task!')
+            } else if (doneStatus === 'done') {
+                this.setState({
+                  loading: true
                 })
-                console.log(this.loading)
-              }, 4000)}
-            
-            }
+                
+                const level = {
+                  level: this.level
+                }
+
+                setTimeout(async () => {
+                  await axios.put(`/api/sounds`, level)
+                  
+                  await this.setState({
+                    loading: false
+                  })
+                  console.log(this.loading)
+                }, 4000)
+              }
           }
         }
       } catch (error) {
@@ -193,9 +189,13 @@ export default class Home extends React.Component {
     return (
       <div>
         <div>
-          <button className='button' onClick={this.handleClick}>Start Audio</button>
-          <button className='button' onClick={this.handleOff}>Stop Audio </button>
-          
+          <button className="button" onClick={this.handleClick}>
+            Start Audio
+          </button>
+          <button className="button" onClick={this.handleOff}>
+            Stop Audio{' '}
+          </button>
+
           {this.state.loading ? <LoadingSpinner /> : null}
         </div>
         <div>

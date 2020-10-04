@@ -9,38 +9,35 @@ router.get('/', async (req, res, next) => {
   try {
     sc.server.boot().then(server => {
       let def = server.synthDef(
-        'hedrasnewsynth',
+        'level0',
         `
-        
-      (
+  
+        (
 
-        SynthDef.new("hedrasnewsynth", {
-         
-          var amp2, freq1, freq2, sig1, sig2;
-        
-          freq1 = LFNoise0.kr(MouseX.kr(0.1, 10)).exprange(40, 40 * 25).round(40);
-          freq2 = LFNoise0.kr(MouseY.kr(0.1, 12)).exprange(40, 40 * 25).round(40);
-        
-          sig1 = Pulse.ar(freq1, 0.5, MouseButton.kr(0, 0.5));
-          sig2 = Pulse.ar(freq2, 0.5, MouseButton.kr(0, 0.5));
-          Out.ar(0, sig1);
-          Out.ar(1, sig2);
-        }).add;
-        
-        
-        )
+          SynthDef.new("level0", {
+
+            var amp2, freq1, freq2, sig1, sig2;
+
+            freq1 = LFNoise0.kr(3).exprange(MouseX.kr(0, 40), 40 * 25).round(40);
+            freq2 = LFNoise0.kr(2).exprange((MouseY.kr(0, 50)), 40 * 25).round(40);
+
+            sig1 = SinOsc.ar(freq1, 0.5, MouseButton.kr(0, 0.5));
+            sig2 = SinOsc.ar(freq2, 0.5, MouseButton.kr(0, 0.5));
+            Out.ar(0, sig1);
+            Out.ar(1, sig2);
+          }).add;
+
+
+          )
     `
       )
 
-      const group = server.group()
 
       const spawn = () => {
         server.synth(
           def,
-          {
-            // spawn each synth into the same group
-          },
-          group
+         
+          
         )
       }
 
@@ -58,25 +55,25 @@ router.put('/', async (req, res, next) => {
     if (req.body.level === 1) {
       sc.server.boot().then(server => {
         let def = server.synthDef(
-          'hedrasnewsynth',
+          'level1',
           `
-        (
+          (
+
+            SynthDef.new("level1", {
   
-          SynthDef.new("hedrasnewsynth", {
-           
-            var amp2, freq1, freq2, sig1, sig2;
-          
-            freq1 = LFNoise0.kr(3).exprange(MouseX.kr(0, 40), 40 * 25).round(40);
-            freq2 = LFNoise0.kr(2).exprange((MouseY.kr(0, 50)), 40 * 25).round(40);
-          
-            sig1 = Pulse.ar(freq1, 0.5, MouseButton.kr(0, 0.5));
-            sig2 = Pulse.ar(freq2, 0.5, MouseButton.kr(0, 0.5));
-            Out.ar(0, sig1);
-            Out.ar(1, sig2);
-          }).add;
-          
-          
-          )
+              var amp2, freq1, freq2, sig1, sig2;
+  
+              freq1 = LFNoise0.kr(3).exprange(MouseX.kr(0, 40), 40 * 25).round(40);
+              freq2 = LFNoise0.kr(2).exprange((MouseY.kr(0, 50)), 40 * 25).round(40);
+      sig1 = Formant.ar(MouseX.kr(0, 660), MouseY.kr(0, 3000), 880.0, MouseButton.kr(0, 0.5), add: 0.0);
+      sig2 = Formant.ar(MouseY.kr(0, 660), MouseX.kr(0, 3000), 880.0, MouseButton.kr(0, 0.5), add: 0.0);
+  
+      Out.ar(0, FreeVerb.ar(sig1, 0.4, 0.7, 0.2));
+              Out.ar(1, FreeVerb.ar(sig2, 0.4, 0.7, 0.2));
+            }).add;
+  
+  
+            )
       `
         )
         const spawn = () => {
@@ -89,25 +86,25 @@ router.put('/', async (req, res, next) => {
     } else if (req.body.level === 2) {
       sc.server.boot().then(server => {
         let def = server.synthDef(
-          'hedrasnewsynth',
+          'level2',
           `
-        (
+          (
+
+            SynthDef.new("level2", {
   
-          SynthDef.new("hedrasnewsynth", {
-           
-            var amp2, freq1, freq2, sig1, sig2;
-          
-            freq1 = LFNoise0.kr(3).exprange(MouseX.kr(0, 40), 40 * 25).round(40);
-            freq2 = LFNoise0.kr(2).exprange((MouseY.kr(0, 50)), 40 * 25).round(40);
-          
-            sig1 = SinOsc.ar(freq1, 0.5, MouseButton.kr(0, 0.5));
-            sig2 = SinOsc.ar(freq2, 0.5, MouseButton.kr(0, 0.5));
-            Out.ar(0, sig1);
-            Out.ar(1, sig2);
-          }).add;
-          
-          
-          )
+              var amp2, freq1, freq2, sig1, sig2;
+  
+      freq1 = LFNoise0.kr(MouseX.kr(0, 40).exprange(MouseX.kr(0, 40), 40 * 60).round(40));
+      freq2 = LFNoise0.kr(MouseY.kr(40, 0).exprange((MouseY.kr(0, 50)), 40 * 60).round(40));
+  
+              sig1 = Saw.ar(freq1, MouseButton.kr(0, 0.5));
+              sig2 = Saw.ar(freq2, MouseButton.kr(0, 0.5));
+          Out.ar(0, FreeVerb.ar(sig1, 0.4, 0.9, 0.2));
+        Out.ar(1, FreeVerb.ar(sig2, 0.4, 0.9, 0.2));
+            }).add;
+  
+  
+            )
       `
         )
         const spawn = () => {
